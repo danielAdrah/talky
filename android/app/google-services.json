@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "963977691428",
+    "project_id": "talky-c22fa",
+    "storage_bucket": "talky-c22fa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963977691428:android:d9b766dc41ac03385cb3b1",
+        "android_client_info": {
+          "package_name": "com.example.talky"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpGR8IsV6BdpTl4Zft0cGvFlWpvcE9JGk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
