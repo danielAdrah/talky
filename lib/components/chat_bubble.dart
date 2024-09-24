@@ -39,6 +39,9 @@ class ChatBubble extends StatelessWidget {
                   leading: Icon(Icons.block),
                   title: Text("Block User"),
                   onTap: () {
+                    //this will po the dialog
+                    Navigator.pop(context);
+                    //this will take you out form the chat
                     Navigator.pop(context);
                     blockUser(context, userId);
                   },

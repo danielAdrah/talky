@@ -1,5 +1,6 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:talky/components/user_tile.dart';
 import 'package:talky/services/chat/chat_service.dart';
@@ -25,13 +26,20 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           centerTitle: true,
-          title: Text(
-            'U S E R S',
-            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          title: FadeInDown(
+            delay: Duration(milliseconds: 500),
+            curve: Curves.decelerate,
+            child: Text(
+              'U S E R S',
+            ),
           ),
         ),
         drawer: CustomeDrawer(),
-        body: SafeArea(child: userBuilder()),
+        body: SafeArea(
+            child: FadeInDown(
+                delay: Duration(milliseconds: 600),
+                curve: Curves.decelerate,
+                child: userBuilder())),
       ),
     );
   }

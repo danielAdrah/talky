@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:talky/components/user_tile.dart';
 import 'package:talky/services/auth/auth_service.dart';
@@ -40,14 +41,19 @@ class BlockedUser extends StatelessWidget {
     String userId = auth.getCurrent()!.uid;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('BLOCKED USERS'),
+        title: FadeInDown(
+            delay: Duration(milliseconds: 300),
+            child: const Text('BLOCKED USERS')),
         centerTitle: true,
       ),
       body: StreamBuilder<List<Map<String, dynamic>>>(
           stream: chat.getBlockedUsers(userId),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return Center(child: Text(snapshot.error.toString()));
+              return Center(
+                  child: ZoomIn(
+                      delay: Duration(milliseconds: 300),
+                      child: Text(snapshot.error.toString())));
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -64,16 +70,25 @@ class BlockedUser extends StatelessWidget {
             //if no users
             if (blockUsers.isEmpty) {
               return Center(
-                child: Text("No blocked users"),
+                child: ZoomIn(
+                  delay: Duration(milliseconds: 300),
+                  child: Text(
+                    "No blocked users",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
               );
             }
             return ListView.builder(
                 itemCount: blockUsers.length,
                 itemBuilder: (context, index) {
                   final user = blockUsers[index];
-                  return UserTile(
-                      onTap: () => unblockBox(context, user['uid']),
-                      title: user['email']);
+                  return FadeInDown(
+                    delay: Duration(milliseconds: 450),
+                    child: UserTile(
+                        onTap: () => unblockBox(context, user['uid']),
+                        title: user['email']),
+                  );
                 });
           }),
     );
