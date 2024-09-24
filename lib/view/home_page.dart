@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.transparent,
           centerTitle: true,
           title: Text(
-            'Home',
+            'U S E R S',
             style: TextStyle(color: Theme.of(context).colorScheme.primary),
           ),
         ),
@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget userBuilder() {
     return StreamBuilder(
-        stream: chatService.getUserStream(),
+        stream: chatService.getUsersExcludeBlocked(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(

@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:talky/view/blocked_user.dart';
 
 import '../themes/theme_provider.dart';
 
@@ -22,7 +23,7 @@ class _SettingsState extends State<Settings> {
           backgroundColor: Colors.transparent,
           centerTitle: true,
           title: Text(
-            'settings',
+            'S E T T I N G S',
             style: TextStyle(color: Theme.of(context).colorScheme.primary),
           ),
         ),
@@ -30,6 +31,7 @@ class _SettingsState extends State<Settings> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                //dark mode switch
                 Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.secondary,
@@ -59,6 +61,40 @@ class _SettingsState extends State<Settings> {
                             Provider.of<ThemeProvider>(context, listen: false)
                                 .toggleTheme(),
                       )
+                    ],
+                  ),
+                ),
+                //blocked users list
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.secondary,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  margin: EdgeInsets.only(right: 25, left: 25),
+                  padding: EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Icons.settings),
+                          SizedBox(width: 8),
+                          Text(
+                            "settings",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BlockedUser()));
+                        },
+                        icon: Icon(Icons.arrow_forward_ios),
+                      ),
                     ],
                   ),
                 ),

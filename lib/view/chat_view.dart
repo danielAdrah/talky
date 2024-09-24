@@ -183,8 +183,12 @@ class _ChatViewState extends State<ChatView> {
 
     return Container(
         alignment: alignment,
-        child:
-            ChatBubble(message: data["message"], isCurrentUser: isCurrentUser));
+        child: ChatBubble(
+          message: data["message"],
+          isCurrentUser: isCurrentUser,
+          messageId: doc.id,
+          userId: data['senderID'],
+        ));
   }
 
   //========user input============
