@@ -146,4 +146,7 @@ class ChatService extends ChangeNotifier {
       return userDocs.map((doc) => doc.data() as Map<String, dynamic>).toList();
     });
   }
+
+  
+
 }

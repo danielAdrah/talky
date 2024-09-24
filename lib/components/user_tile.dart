@@ -18,10 +18,20 @@ class UserTile extends StatelessWidget {
         padding: EdgeInsets.all(25),
         child: Row(
           children: [
-            Icon(
-              Icons.person,
-              size: 30,
-              color: Theme.of(context).colorScheme.inversePrimary,
+            // Icon(
+            //   Icons.person,
+            //   size: 30,
+            //   color: Theme.of(context).colorScheme.inversePrimary,
+            // ),
+            Container(
+              padding: EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  shape: BoxShape.circle),
+              child: CircleAvatar(
+                radius: 25,
+                backgroundImage: AssetImage("assets/img/u1.png"),
+              ),
             ),
             SizedBox(width: 10),
             Text(title,

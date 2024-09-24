@@ -157,7 +157,11 @@ class _ChatViewState extends State<ChatView> {
             );
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text("No messages yet"));
+            return Center(
+                child: Text(
+              "No messages yet",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ));
           }
 
           //return a list of messages
@@ -177,6 +181,11 @@ class _ChatViewState extends State<ChatView> {
     //is current user
     bool isCurrentUser = data['senderID'] == auth.getCurrent()!.uid;
 
+    //timestamp for the message
+    Timestamp timestamp = data['timestamp'];
+    DateTime dateTime = timestamp.toDate();
+    String messageDate = dateTime.toString().substring(11, 16);
+
     //align the message depending on the sender is the current user
     var alignment =
         isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
@@ -185,6 +194,7 @@ class _ChatViewState extends State<ChatView> {
         alignment: alignment,
         child: ChatBubble(
           message: data["message"],
+          messageTime: messageDate,
           isCurrentUser: isCurrentUser,
           messageId: doc.id,
           userId: data['senderID'],

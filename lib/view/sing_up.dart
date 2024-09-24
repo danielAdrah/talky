@@ -19,13 +19,23 @@ class _SingUpState extends State<SingUp> {
   final TextEditingController cpwCont = TextEditingController();
   bool isVisible = false;
   bool isVisible2 = false;
+  bool isLoading = false;
   signOut(BuildContext context) {
     final auth = AuthService();
 
     if (pwCont.text == cpwCont.text) {
+      setState(() {
+        isLoading = true;
+      });
       try {
         auth.signUp(mailCont.text, pwCont.text);
+        setState(() {
+          isLoading = false;
+        });
       } catch (e) {
+        setState(() {
+          isLoading = false;
+        });
         showDialog(
             context: context,
             builder: (context) {
@@ -35,6 +45,9 @@ class _SingUpState extends State<SingUp> {
             });
       }
     } else {
+      setState(() {
+        isLoading = false;
+      });
       // showDialog(
       //     context: context,
       //     builder: (context) {
@@ -121,13 +134,17 @@ class _SingUpState extends State<SingUp> {
                       controller: cpwCont),
                 ),
                 SizedBox(height: 25),
-                FadeInDown(
-                  delay: Duration(milliseconds: 400),
-                  child: PrimaryButton(
-                    onTap: () => signOut(context),
-                    text: "SingUp",
-                  ),
-                ),
+                isLoading
+                    ? CircularProgressIndicator(
+                        color: Theme.of(context).colorScheme.primary,
+                      )
+                    : FadeInDown(
+                        delay: Duration(milliseconds: 400),
+                        child: PrimaryButton(
+                          onTap: () => signOut(context),
+                          text: "SingUp",
+                        ),
+                      ),
                 FadeInDown(
                   delay: Duration(milliseconds: 450),
                   child: Row(

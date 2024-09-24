@@ -2,12 +2,14 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:talky/services/auth/auth_gate.dart';
 import 'package:talky/themes/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   await Firebase.initializeApp(
     options: FirebaseOptions(
       apiKey: "AIzaSyCpGR8IsV6BdpTl4Zft0cGvFlWpvcE9JGk",
@@ -16,11 +18,10 @@ void main() async {
       projectId: "talky-c22fa",
     ),
   );
-  runApp(
-    ChangeNotifierProvider(create: (context)=>ThemeProvider(),
+  runApp(ChangeNotifierProvider(
+    create: (context) => ThemeProvider(),
     child: const MyApp(),
-    )
-    );
+  ));
 }
 
 class MyApp extends StatelessWidget {

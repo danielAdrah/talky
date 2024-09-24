@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import '../services/auth/auth_service.dart';
+import '../view/profile_view.dart';
 import '../view/settings.dart';
 
 class CustomeDrawer extends StatelessWidget {
@@ -25,14 +26,14 @@ class CustomeDrawer extends StatelessWidget {
                 child: Center(
                   child: Image(
                     image: AssetImage("assets/img/speech-bubble (1).png"),
-                    width: 180,
-                    height: 180,
+                    width: 220,
+                    height: 220,
                   ),
                 ),
               ),
               SizedBox(height: 15),
               Padding(
-                padding: const EdgeInsets.only(left: 25),
+                padding: const EdgeInsets.only(left: 25, bottom: 10),
                 child: ListTile(
                   title: Text(
                     "H O M E",
@@ -47,7 +48,24 @@ class CustomeDrawer extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 25),
+                padding: const EdgeInsets.only(left: 25, bottom: 10),
+                child: ListTile(
+                  title: Text(
+                    "P R O F I L E",
+                  ),
+                  leading: Icon(
+                    Icons.person_4_rounded,
+                    size: 25,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ProfileView()));
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 25, bottom: 10),
                 child: ListTile(
                   title: Text(
                     "S E T T I N G S",

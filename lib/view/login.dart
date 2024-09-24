@@ -21,21 +21,33 @@ class _LogInState extends State<LogIn> {
   final TextEditingController pwCont = TextEditingController();
   final FirebaseAuth auth = FirebaseAuth.instance;
   bool isVisible = false;
+  bool isLoading = false;
   void logIn(BuildContext context) async {
     //auth service
     final authService = AuthService();
+    setState(() {
+      isLoading = true;
+    });
 
     //try logIn
     try {
       await authService.signInWithEmailPassword(mailCont.text, pwCont.text);
+      setState(() {
+        isLoading = false;
+      });
     } catch (e) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text(e.toString().substring(0, 20)),
-            );
-          });
+      setState(() {
+        isLoading = false;
+      });
+      // showDialog(
+      //     context: context,
+      //     builder: (context) {
+      //       return AlertDialog(
+      //         title: Text("Wrong User Credential"),
+      //       );
+      //     });
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Wrong user credential ')));
     }
   }
   // Future<void> signInWithPassword() async {
@@ -121,13 +133,17 @@ class _LogInState extends State<LogIn> {
                   ),
                 ),
                 SizedBox(height: 25),
-                FadeInDown(
-                  delay: Duration(milliseconds: 400),
-                  child: PrimaryButton(
-                    onTap: () => logIn(context),
-                    text: "LogIn",
-                  ),
-                ),
+                isLoading
+                    ? CircularProgressIndicator(
+                        color: Theme.of(context).colorScheme.primary,
+                      )
+                    : FadeInDown(
+                        delay: Duration(milliseconds: 400),
+                        child: PrimaryButton(
+                          onTap: () => logIn(context),
+                          text: "LogIn",
+                        ),
+                      ),
                 FadeInDown(
                   delay: Duration(milliseconds: 500),
                   child: Row(

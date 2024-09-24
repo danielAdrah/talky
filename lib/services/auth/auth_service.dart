@@ -7,11 +7,11 @@ class AuthService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   //get the current user
-  User? getCurrent(){
+  User? getCurrent() {
     return _auth.currentUser;
   }
 
-  //sign in
+  //SIGN IN
   Future<UserCredential> signInWithEmailPassword(String email, password) async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
@@ -21,8 +21,8 @@ class AuthService {
 
       //save the users in a doc
       firestore.collection("Users").doc(userCredential.user!.uid).set({
-        'uid':userCredential.user!.uid,
-        'email':email,
+        'uid': userCredential.user!.uid,
+        'email': email,
       });
 
       return userCredential;
@@ -31,12 +31,12 @@ class AuthService {
     }
   }
 
-  //sing out
+  //SIGN OUT
   Future<void> singOut() async {
     return _auth.signOut();
   }
 
-  //sing up
+  //SIGN UP
   Future<UserCredential> signUp(String email, password) async {
     try {
       UserCredential userCredential =
@@ -52,6 +52,28 @@ class AuthService {
       return userCredential;
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);
+    }
+  }
+
+  //DELETE ACCOUNT
+  Future<void> deleteAccount() async {
+    try {
+      final currentUser = _auth.currentUser;
+
+      if (currentUser != null) {
+        // Delete user documents from Firestore
+        await firestore.collection('users').doc(currentUser.uid).delete();
+
+        // Delete the user from Firebase Authentication
+        await currentUser.delete();
+
+        // Sign out the user
+        await singOut();
+
+        return;
+      }
+    } on FirebaseAuthException catch (e) {
+      throw Exception('Failed to delete account: ${e.message}');
     }
   }
 }

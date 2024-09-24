@@ -62,6 +62,17 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           }
+          if (!snapshot.hasData) {
+            return Center(
+              child: ZoomIn(
+                delay: Duration(milliseconds: 300),
+                child: Text(
+                  "There are no users yet!",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
+            );
+          }
           return ListView(
             children: snapshot.data!
                 .map<Widget>((userData) => userListItem(userData, context))

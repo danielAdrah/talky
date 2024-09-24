@@ -9,13 +9,15 @@ class ChatBubble extends StatelessWidget {
   final String message;
   final String messageId;
   final String userId;
+  final String messageTime;
   final bool isCurrentUser;
   const ChatBubble(
       {super.key,
       required this.message,
       required this.isCurrentUser,
       required this.messageId,
-      required this.userId});
+      required this.userId,
+      required this.messageTime});
 
   void showOptions(BuildContext context, String messageId, String userId) {
     showModalBottomSheet(
@@ -124,21 +126,33 @@ class ChatBubble extends StatelessWidget {
           showOptions(context, messageId, userId);
         }
       },
-      child: Container(
-        padding: EdgeInsets.all(16),
-        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 25),
-        decoration: BoxDecoration(
-          color: isCurrentUser
-              ? Theme.of(context).colorScheme.surfaceContainer
-              : isDarkMode
-                  ? Colors.grey.shade800
-                  : Colors.grey.shade500,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(
-          message,
-          style: TextStyle(color: Colors.white),
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Container(
+            padding: EdgeInsets.all(16),
+            margin: EdgeInsets.symmetric(vertical: 5, horizontal: 25),
+            decoration: BoxDecoration(
+              color: isCurrentUser
+                  ? Theme.of(context).colorScheme.surfaceContainer
+                  : isDarkMode
+                      ? Colors.grey.shade800
+                      : Colors.grey.shade500,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              message,
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 30),
+            child: Text(
+              messageTime,
+              style: TextStyle(fontSize: 10),
+            ),
+          ),
+        ],
       ),
     );
   }
