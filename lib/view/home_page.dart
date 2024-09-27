@@ -1,6 +1,7 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, avoid_print
 
 import 'package:animate_do/animate_do.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:talky/components/user_tile.dart';
 import 'package:talky/services/chat/chat_service.dart';
@@ -19,6 +20,31 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final chatService = ChatService();
   final authService = AuthService();
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  //----------------
+  // Future<void> verifyFirestoreData() async {
+  //   final usersSnapshot = await firestore.collection('Users').get();
+  //   for (var doc in usersSnapshot.docs) {
+  //     print('User ${doc.id}: ${doc.data()}');
+  //   }
+  // }
+
+  // Future<void> findDeletedAccountsPath() async {
+  //   final usersSnapshot = await firestore.collection('Users').get();
+  //   for (var doc in usersSnapshot.docs) {
+  //     print('User ${doc.data()}: Path: ${doc.reference.path}');
+  //   }
+  // }
+
+  
+
+  @override
+  void initState() {
+    super.initState();
+   
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -62,7 +88,7 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           }
-          if (!snapshot.hasData) {
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(
               child: ZoomIn(
                 delay: Duration(milliseconds: 300),

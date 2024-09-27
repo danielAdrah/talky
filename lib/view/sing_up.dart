@@ -17,6 +17,7 @@ class _SingUpState extends State<SingUp> {
   final TextEditingController mailCont = TextEditingController();
   final TextEditingController pwCont = TextEditingController();
   final TextEditingController cpwCont = TextEditingController();
+ 
   bool isVisible = false;
   bool isVisible2 = false;
   bool isLoading = false;

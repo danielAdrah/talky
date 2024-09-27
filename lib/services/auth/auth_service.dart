@@ -1,10 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../chat/chat_service.dart';
+
 class AuthService {
   //fireBase instance
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  ChatService chat = ChatService();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  
 
   //get the current user
   User? getCurrent() {
@@ -62,13 +67,14 @@ class AuthService {
 
       if (currentUser != null) {
         // Delete user documents from Firestore
-        await firestore.collection('users').doc(currentUser.uid).delete();
+        await firestore.collection('Users').doc(currentUser.uid).delete();
 
         // Delete the user from Firebase Authentication
         await currentUser.delete();
 
         // Sign out the user
         await singOut();
+
 
         return;
       }

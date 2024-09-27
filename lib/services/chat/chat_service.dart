@@ -9,6 +9,8 @@ class ChatService extends ChangeNotifier {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
 
+  
+
   //GET ALL THE USERS
   Stream<List<Map<String, dynamic>>> getUserStream() {
     return firestore.collection("Users").snapshots().map((snapshot) {
@@ -28,21 +30,54 @@ class ChatService extends ChangeNotifier {
         .collection('BlockedUsers')
         .snapshots()
         .asyncMap((snapshot) async {
-
-      //get all the blocked users id    
+      //get all the blocked users id
       final blockedUserIds = snapshot.docs.map((doc) => doc.id).toList();
 
       //get all the users
-      final usersSnapshot = await firestore.collection('Users').get();
+      final usersSnapshot = await firestore
+          .collection('Users')
+          .get(GetOptions(source: Source.server));
 
       //this will display all the user without me(current user) and the blocked users
       return usersSnapshot.docs
           .where((doc) =>
+              doc.exists &&
               doc.data()['email'] != currentUser.email &&
-              !blockedUserIds.contains(doc.id))
+              !blockedUserIds.contains(doc.id) &&
+              doc.data()['uid'] != null && // Ensure UID exists
+              doc.data()['email'] != null) // Ensure email exists
           .map((doc) => doc.data())
           .toList();
+      // usersSnapshot.docs
+      //     .where((doc) =>
+      //         doc.data()['email'] != currentUser.email &&
+      //         !blockedUserIds.contains(doc.id))
+      //     .map((doc) => doc.data())
+      //     .toList();
     });
+  }
+
+//GET USER INFO
+  Future<Map<String, dynamic>> getUserInfo() async {
+    try {
+      final currentUser = auth.currentUser;
+      if (currentUser != null) {
+        final uid = currentUser.uid;
+        print('Attempting to fetch info for user with UID: $uid');
+        final doc = await firestore.collection('users').doc(uid).get();
+        if (doc.exists) {
+          print('User document found');
+          return doc.data() as Map<String, dynamic>;
+        } else {
+          throw Exception('User document not found for UID: $uid');
+        }
+      } else {
+        throw Exception('No current user logged in');
+      }
+    } catch (e) {
+      print('Error fetching user info: $e');
+      rethrow; // Re-throw the exception so it can be caught by the caller
+    }
   }
 
   //SEND A MESSAGE
@@ -146,7 +181,4 @@ class ChatService extends ChangeNotifier {
       return userDocs.map((doc) => doc.data() as Map<String, dynamic>).toList();
     });
   }
-
-  
-
 }
