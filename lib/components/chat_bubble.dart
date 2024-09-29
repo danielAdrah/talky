@@ -11,13 +11,16 @@ class ChatBubble extends StatelessWidget {
   final String userId;
   final String messageTime;
   final bool isCurrentUser;
-  const ChatBubble(
-      {super.key,
-      required this.message,
-      required this.isCurrentUser,
-      required this.messageId,
-      required this.userId,
-      required this.messageTime});
+  final bool isRead;
+  const ChatBubble({
+    super.key,
+    required this.message,
+    required this.isCurrentUser,
+    required this.messageId,
+    required this.userId,
+    required this.messageTime,
+    required this.isRead,
+  });
 
   void showOptions(BuildContext context, String messageId, String userId) {
     showModalBottomSheet(
@@ -152,6 +155,7 @@ class ChatBubble extends StatelessWidget {
               style: TextStyle(fontSize: 10),
             ),
           ),
+          
         ],
       ),
     );

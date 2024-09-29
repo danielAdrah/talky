@@ -6,6 +6,7 @@ class MessageModel {
   final String receiverID;
   final String message;
   final Timestamp timestamp;
+  bool isRead;
 
   MessageModel({
     required this.senderID,
@@ -13,6 +14,7 @@ class MessageModel {
     required this.receiverID,
     required this.message,
     required this.timestamp,
+    this.isRead = false,
   });
 
   Map<String, dynamic> toMap() {

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:talky/components/custome_text_field.dart';
@@ -17,17 +19,19 @@ class _SingUpState extends State<SingUp> {
   final TextEditingController mailCont = TextEditingController();
   final TextEditingController pwCont = TextEditingController();
   final TextEditingController cpwCont = TextEditingController();
- 
+
   bool isVisible = false;
   bool isVisible2 = false;
   bool isLoading = false;
+
+  //==========================
   signOut(BuildContext context) {
     final auth = AuthService();
-
-    if (pwCont.text == cpwCont.text) {
-      setState(() {
+    setState(() {
         isLoading = true;
       });
+    if (pwCont.text == cpwCont.text) {
+      
       try {
         auth.signUp(mailCont.text, pwCont.text);
         setState(() {
@@ -37,25 +41,15 @@ class _SingUpState extends State<SingUp> {
         setState(() {
           isLoading = false;
         });
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text(e.toString().substring(0, 20)),
-              );
-            });
+        print("errorrrrrrr signup ${e.toString()}");
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(e.toString())));
       }
     } else {
       setState(() {
         isLoading = false;
       });
-      // showDialog(
-      //     context: context,
-      //     builder: (context) {
-      //       return AlertDialog(
-      //         title: Text("password doesn't match"),
-      //       );
-      //     });
+
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Password does not match ')));
     }

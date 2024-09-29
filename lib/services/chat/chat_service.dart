@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, avoid_function_literals_in_foreach_calls
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -181,4 +181,22 @@ class ChatService extends ChangeNotifier {
       return userDocs.map((doc) => doc.data() as Map<String, dynamic>).toList();
     });
   }
+
+  //=========TO MARK THE MESSAGE AS READ =========
+   Future<void> markMessagesAsRead(String chatRoomID) async {
+    await firestore
+        .collection("chat_rooms")
+        .doc(chatRoomID)
+        .collection("messages")
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        if (doc['isRead'] == false) {
+          doc.reference.update({"isRead": true});
+        }
+      });
+    });
+  }
+
+
 }

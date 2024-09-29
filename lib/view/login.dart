@@ -22,8 +22,9 @@ class _LogInState extends State<LogIn> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   bool isVisible = false;
   bool isLoading = false;
+
   void logIn(BuildContext context) async {
-    //auth service
+    // auth service
     final authService = AuthService();
     setState(() {
       isLoading = true;
@@ -39,41 +40,66 @@ class _LogInState extends State<LogIn> {
       setState(() {
         isLoading = false;
       });
-      // showDialog(
-      //     context: context,
-      //     builder: (context) {
-      //       return AlertDialog(
-      //         title: Text("Wrong User Credential"),
-      //       );
-      //     });
+      print("errorrrrrrrr${e.toString()}");
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Wrong user credential ')));
+          .showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
-  // Future<void> signInWithPassword() async {
-  //   try {
-  //     await auth.signInWithEmailAndPassword(
-  //         email: "test@gmail.com", password: "112233");
 
-  //     Navigator.pushReplacement(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => HomePage()),
-  //     );
+  //==============
+  // void logIn(BuildContext context) async {
+  //   // auth service
+  //   final authService = AuthService();
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+
+  //   //try logIn
+  //   try {
+  //     await authService.signInWithEmailPassword(mailCont.text, pwCont.text);
+  //     setState(() {
+  //       isLoading = false;
+  //     });
   //   } on FirebaseAuthException catch (e) {
-  //   if (e.code == 'network-request-failed') {
-  //     print('Network request failed');
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+
+  //     String errorMessage;
+
+  //     switch (e.code) {
+  //       case "invalid-email":
+  //         errorMessage = "Invalid email address";
+  //         break;
+  //       case "wrong-password":
+  //         errorMessage = "Wrong password";
+  //         break;
+  //       case "user-not-found":
+  //         errorMessage = "User not found";
+  //         break;
+  //       case "network-request-failed":
+  //         errorMessage = "No internet connection";
+  //         break;
+  //       case "too-many-requests":
+  //         errorMessage = "Too many login attempts. Please try again later.";
+  //         break;
+  //       default:
+  //         errorMessage = "An unexpected error occurred";
+  //         break;
+  //     }
+
   //     ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(content: Text('Please check your internet connection')));
-  //   } else {
-  //     print('Firebase Authentication error: $e');
+  //       SnackBar(content: Text(errorMessage)),
+  //     );
+  //   } catch (e) {
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //     print('Exception type: ${e.runtimeType}');
   //     ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(content: Text(e.message ?? 'An error occurred')));
+  //       SnackBar(content: Text("An unexpected error occurred")),
+  //     );
   //   }
-  // } catch (e) {
-  //   print('Unexpected error: $e');
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text('An unexpected error occurred')));
-  // }
   // }
 
   @override

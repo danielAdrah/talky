@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_literals_to_create_immutables, unused_local_variable
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +31,7 @@ class _ChatViewState extends State<ChatView> {
   @override
   void initState() {
     super.initState();
+
     myFocusNode.addListener(() {
       if (myFocusNode.hasFocus) {
         Future.delayed(
@@ -72,60 +73,91 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    bool isDarkMode =
+        Provider.of<ThemeProvider>(context, listen: false).isDarkMode;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          centerTitle: true,
-          title: Text(
-            widget.recieverEmail,
-            style:
-                TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
-          ),
-        ),
-        body: Column(
-          children: [
-            Expanded(
-              child: buildMessageList(),
-            ),
-            // buildUserInput(),
-            Padding(
-              padding: EdgeInsets.only(bottom: 10),
-              child: Row(
+        // appBar: AppBar(
+        //   elevation: 0,
+        //   backgroundColor: Colors.transparent,
+        //   centerTitle: true,
+        //   title: Text(
+        //     widget.recieverEmail,
+        //     style:
+        //         TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
+        //   ),
+        // ),
+        body: Container(
+          height: height,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(isDarkMode
+                      ? "assets/img/dark.jpg"
+                      : "assets/img/light.jpg"),
+                  fit: BoxFit.cover)),
+          child: Column(
+            children: [
+              SizedBox(height: 15),
+              Row(
                 children: [
-                  Expanded(
-                    child: CustomeTextField(
-                      controller: messageController,
-                      myFocusNode: myFocusNode,
-                      secure: false,
-                      text: "Type a message",
-                      type: TextInputType.name,
-                      icon: Icons.emoji_emotions,
-                    ),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(Icons.arrow_back)),
+                  SizedBox(width: 80),
+                  Text(
+                    widget.recieverEmail,
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
                   ),
-                  Container(
-                      margin: EdgeInsets.only(right: 20),
-                      decoration: BoxDecoration(
-                        color: Provider.of<ThemeProvider>(context).isDarkMode
-                            ? Colors.greenAccent
-                            : Colors.blueAccent,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                          child: IconButton(
-                              onPressed: () {
-                                sendMessage();
-                                messageController.clear();
-                                scrollDown();
-                              },
-                              icon: Icon(
-                                Icons.send,
-                                color: Colors.white,
-                              ))))
                 ],
               ),
-            )
-          ],
+              Expanded(
+                child: buildMessageList(),
+              ),
+              // buildUserInput(),
+              Padding(
+                padding: EdgeInsets.only(bottom: 10),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: CustomeTextField(
+                        controller: messageController,
+                        myFocusNode: myFocusNode,
+                        secure: false,
+                        text: "Type a message",
+                        type: TextInputType.name,
+                        icon: Icons.emoji_emotions,
+                      ),
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(right: 20),
+                        decoration: BoxDecoration(
+                          color: Provider.of<ThemeProvider>(context).isDarkMode
+                              ? Colors.greenAccent
+                              : Colors.blueAccent,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                            child: IconButton(
+                                onPressed: () {
+                                  sendMessage();
+                                  messageController.clear();
+                                  scrollDown();
+                                },
+                                icon: Icon(
+                                  Icons.send,
+                                  color: Colors.white,
+                                ))))
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -186,6 +218,11 @@ class _ChatViewState extends State<ChatView> {
     DateTime dateTime = timestamp.toDate();
     String messageDate = dateTime.toString().substring(11, 16);
 
+    //the status of the message
+    bool isRead = data['isRead'] ?? false;
+
+    print("Message ID: ${doc.id}, Is Read: $isRead");
+
     //align the message depending on the sender is the current user
     var alignment =
         isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
@@ -198,6 +235,7 @@ class _ChatViewState extends State<ChatView> {
           isCurrentUser: isCurrentUser,
           messageId: doc.id,
           userId: data['senderID'],
+          isRead: isRead,
         ));
   }
 
