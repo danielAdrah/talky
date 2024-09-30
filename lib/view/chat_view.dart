@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, unused_local_variable
+// ignore_for_file: prefer_const_literals_to_create_immutables, unused_local_variable, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +31,6 @@ class _ChatViewState extends State<ChatView> {
   @override
   void initState() {
     super.initState();
-
     myFocusNode.addListener(() {
       if (myFocusNode.hasFocus) {
         Future.delayed(
@@ -227,16 +226,22 @@ class _ChatViewState extends State<ChatView> {
     var alignment =
         isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
 
-    return Container(
-        alignment: alignment,
-        child: ChatBubble(
+    return Row(
+      mainAxisAlignment:
+          isCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+      children: [
+        ChatBubble(
           message: data["message"],
           messageTime: messageDate,
           isCurrentUser: isCurrentUser,
           messageId: doc.id,
           userId: data['senderID'],
           isRead: isRead,
-        ));
+        ),
+        if (isCurrentUser && isRead)
+          Icon(Icons.check, color: Colors.blue, size: 16),
+      ],
+    );
   }
 
   //========user input============

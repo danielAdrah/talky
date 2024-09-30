@@ -92,6 +92,7 @@ class ChatService extends ChangeNotifier {
         senderEmail: currentUserEmail,
         receiverID: receiverID,
         message: message,
+        isRead: false,
         timestamp: timestamp);
 
     print("after init");
@@ -110,7 +111,8 @@ class ChatService extends ChangeNotifier {
         .collection("messages")
         .add(newMessage.toMap());
 
-    print("after adding");
+
+     await markMessageAsRead(chatRoomID, newMessage.message, currentUserId);
   }
 
   //GET THE MESSAGE
@@ -183,19 +185,28 @@ class ChatService extends ChangeNotifier {
   }
 
   //=========TO MARK THE MESSAGE AS READ =========
-   Future<void> markMessagesAsRead(String chatRoomID) async {
+//    Future<void> markMessagesAsRead(String chatRoomID) async {
+//   await firestore
+//       .collection("chat_rooms")
+//       .doc(chatRoomID)
+//       .collection("messages")
+//       .get()
+//       .then((querySnapshot) {
+//     querySnapshot.docs.forEach((doc) {
+//       if (doc['isRead'] == false) {
+//         doc.reference.update({"isRead": true});
+//       }
+//     });
+//   });
+// }
+
+Future<void> markMessageAsRead(String chatRoomID, String messageId, String userId) async {
     await firestore
         .collection("chat_rooms")
         .doc(chatRoomID)
         .collection("messages")
-        .get()
-        .then((querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        if (doc['isRead'] == false) {
-          doc.reference.update({"isRead": true});
-        }
-      });
-    });
+        .doc(messageId)
+        .update({"isRead": userId});
   }
 
 
